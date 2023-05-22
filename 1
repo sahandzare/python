@@ -1,0 +1,39 @@
+import requests
+import json
+
+
+
+
+url = 'https://api.spoonacular.com/recipes/complexSearch?quisine=romanian&addRecipeInformation=true&apiKey=25f41cc1b64247d3bdc5791ff61e8cfd'
+params = {
+    'quisine': 'romanian',
+    'addRecipeInformation': 'true',
+    'apiKey': '25f41cc1b64247d3bdc5791ff61e8cfd'
+}
+
+response = requests.get(url, params=params)
+data = response.json()
+
+# Check if the request was successful
+if response.status_code == 200:
+    # Iterate over the recipes
+    for recipe in data['results']:
+        title = recipe['title']
+        name = recipe['sourceName']
+        ingredients = recipe['ingredients']
+        instructions = recipe['analyzedInstructions']
+        
+        print('Title:', title)
+        print('Name:', name)
+        
+        print('Ingredients:') #not working!
+        for ingredient in ingredients:
+            print('-', ingredient['original'])
+        
+        print('Instructions:')
+        for step in instructions[0]['steps']:
+            print('-', step['step'])
+        
+        print('-' * 50)  # Separator between recipes
+else:
+    print('Error:', data['message'])
